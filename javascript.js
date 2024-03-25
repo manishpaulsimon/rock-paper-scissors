@@ -30,6 +30,33 @@ function playRound(playerSelection, computerSelection) {
         return 'playerWin';
     }
 }
+
+function updateResults(playerScore,computerScore, winner) {
+    const results = document.getElementById('results');
+    results.textContent = `Player Score: ${playerScore}, Computer Score: ${computerScore},
+    The Winner is: ${winner}`;
+    let score = 0;
+    while(score<=5) {
+        if (playerScore == 5) {
+            results.textContent = `Player Score: ${playerScore} and
+            the Winner is Player`;
+            break;
+        }
+        else if (computerScore == 5) {
+            results.textContent = `Computer Score: ${computerScore} and
+            the Winner is Computer`;
+            break;
+        }
+        score++;
+    }
+}
+
+const resultsDiv = document.createElement('div');
+resultsDiv.id = 'results';
+document.body.appendChild(resultsDiv);
+
+
+
 let playerScore = 0;
 let computerScore = 0; 
 
@@ -46,6 +73,8 @@ const selectRock = buttonRock.addEventListener('click',function() {
     else {
         computerScore += 1;
     }
+    updateResults(playerScore,computerScore, '');
+    
 
 });
 document.body.appendChild(buttonRock);
@@ -62,6 +91,8 @@ const selectPaper = buttonPaper.addEventListener('click',function() {
     else {
         computerScore += 1;
     }
+    updateResults(playerScore,computerScore, '');
+
 });
 document.body.appendChild(buttonPaper);
 
@@ -70,84 +101,15 @@ const buttonScissors = document.createElement('button');
 buttonScissors.textContent = 'Scissors';
 const selectScissors = buttonScissors.addEventListener('click',function() {
     let computerSelection = getComputerChoice();
-    playRound('scissors',computerSelection);
+    let scissorWins = playRound('scissors',computerSelection);
+    if (scissorWins == 'playerWin') {
+        playerScore +=1;
+    }
+    else {
+        computerScore +=1;
+    }
+    updateResults(playerScore,computerScore, '');
+
 });
 document.body.appendChild(buttonScissors);
-
-
-const results = document.createElement('div');
-results.textContent = 'Here are the results:';
-const roundResults = results.addEventListener(function() {
-    let playerScore = 0;
-    let computerScore = 0;
-    while (true) {
-        if (selectScissors || selectPaper || selectRock == 'computerWin') {
-            console.log('Computer Wins this round');
-            computerScore += 1;
-            if (computerScore == 5) {
-                break;
-            }
-        }
-        else if (selectScissors || selectPaper || selectRock == 'playerWin') {
-            console.log('Plaer Wins this round');
-            playerScore += 1;
-            if (playerScore == 5) {
-                break;
-            }
-        }
-        else {
-            console.log('It\'s a tie');
-        }
-    }
-
-    if (computerScore > playerScore) {
-        console.log('Computer Wins');
-    }
-    else if (playerScore > computerScore) {
-        console.log('Player wins');
-    }
-    else {
-        console.log('It\'s a tie');
-    }
-
-});
-document.body.appendChild(results);
-
-
-/*
-// Consider n as total score
-function playGame() {
-    // so we have scores for two players and we need to increment by one for each win, and ignore for tie. Best of 5 wins
-    let playerScore = 0;
-    let computerScore = 0;
-    let numberOfRounds = 0;
-    while (numberOfRounds<5) {
-        // check if playRound equal to tie
-        let playerSelection = prompt("Enter choice:");
-        let computerSelection = getComputerChoice();
-        let roundResult = playRound(playerSelection,computerSelection);
-
-        if (roundResult == 'computerWin') {
-            computerScore += 1;
-        }
-        else if (roundResult == 'playerWin') { 
-            playerScore += 1; 
-        }
-        numberOfRounds++;
-    }
-
-    if (computerScore > playerScore) {
-        console.log("Computer Wins. Computer's score was: "+ computerScore);
-    }
-    else if (playerScore > computerScore) {
-        console.log("Human wins. Your total score was:" +playerScore);
-    } 
-    else {
-        console.log("it's a draw");
-
-    }
-}
-playGame()
-*/
-
 
